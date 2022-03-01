@@ -2,6 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
   MAXIMUM_BALANCE = Oystercard::MAXIMUM_BALANCE
+  MINIMUM_FARE = Oystercard::MINIMUM_FARE
   
   describe "#balance" do
     it "starts with a balance of 0" do
@@ -9,18 +10,18 @@ describe Oystercard do
     end
   end
 
-  context "starting balance is MAXIMUM_BALANCE" do
+  context "starting balance is MINIMUM FARE" do
 
     before do
-      subject.top_up(MAXIMUM_BALANCE)
+      subject.top_up(MINIMUM_FARE)
     end
 
     describe "#top_up" do
       it "can top up" do  
-        expect(subject.balance).to eq(MAXIMUM_BALANCE)
+        expect(subject.balance).to eq(MINIMUM_FARE)
       end
       it "raises an error when the balance exceeds #{MAXIMUM_BALANCE}" do
-        expect { subject.top_up(1) }.to raise_error("Max balance is £#{MAXIMUM_BALANCE}")
+        expect { subject.top_up(MAXIMUM_BALANCE) }.to raise_error("Max balance is £#{MAXIMUM_BALANCE}")
       end
     end
 
@@ -44,7 +45,7 @@ describe Oystercard do
     end
   end
 
-  context "balance is 0" do
+  context "balance is below #{MINIMUM_FARE}" do
     describe "#touch_in" do 
       it "raises error" do
         expect { subject.touch_in }.to raise_error("You need to top up")
@@ -59,9 +60,9 @@ describe Oystercard do
   end
 
   describe "#in_journey?" do
-  it "is initially not in a journey" do
-    expect(subject).to_not be_in_journey
+    it "is initially not in a journey" do
+      expect(subject).to_not be_in_journey
+    end
   end
-end
 end
 
