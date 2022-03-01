@@ -23,6 +23,7 @@ class Oystercard
 
   def touch_out
     fail "You have not touched in" unless in_journey?
+    deduct(MINIMUM_FARE)
     @in_journey = false
   end
 
@@ -34,6 +35,10 @@ class Oystercard
 
   def will_exceed_max_balance?(amount)
     @balance + amount > MAXIMUM_BALANCE
+  end
+
+  def deduct(amount)
+    @balance -= amount
   end
 
 end

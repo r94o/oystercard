@@ -11,7 +11,6 @@ describe Oystercard do
   end
 
   context "starting balance is MINIMUM FARE" do
-
     before do
       subject.top_up(MINIMUM_FARE)
     end
@@ -41,6 +40,10 @@ describe Oystercard do
         subject.touch_in
         subject.touch_out
         expect(subject).to_not be_in_journey
+      end
+      it "reduce balance by #{MINIMUM_FARE}" do
+        subject.touch_in
+        expect { subject.touch_out }.to change{ subject.balance }.by(-MINIMUM_FARE)
       end
     end
   end
